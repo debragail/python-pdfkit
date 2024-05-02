@@ -7,6 +7,8 @@ from .source import Source
 from .configuration import Configuration
 import io
 import codecs
+from security import safe_command
+
 try:
     # Python 2.x and 3.x support for checking string types
     assert basestring
@@ -154,8 +156,7 @@ class PDFKit(object):
     def to_pdf(self, path=None):
         args = self.command(path)
 
-        result = subprocess.Popen(
-            args,
+        result = safe_command.run(subprocess.Popen, args,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
